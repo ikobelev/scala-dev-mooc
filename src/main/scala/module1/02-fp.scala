@@ -26,6 +26,21 @@ import scala.annotation.tailrec
        case Option.Some(v) => v
        case Option.None => throw new Exception("get on empty Option")
       }
+
+      def printIfAny: Unit = this match {
+        case Option.Some(v) => println(v)
+        case Option.None => ()
+      }
+
+      def orElse[B>:A](that: Option[B]):Option[B] =
+        if (isEmpty) that else this
+
+      def zip[B](that:Option[B]): Option[(A,B)] =
+        if (isEmpty || that.isEmpty) Option.None else Option.Some((get, that.get))
+
+      def filter(p: A=>Boolean): Option[A] =
+        if (!isEmpty && p(get)) this else Option.None
+
    }
 
    object Option {
